@@ -1,0 +1,6 @@
+Disassembly of executable contents:
+  0x100:                               | .pos 0x100 code
+  0x100:                               | _start:
+  0x100: 70 88 77 66 55 44 33 22 11    |   jmp 0x1122334455667788
+  0x109: 80 11 22 33 44 55 66 77 88    |   call 0x8877665544332211
+

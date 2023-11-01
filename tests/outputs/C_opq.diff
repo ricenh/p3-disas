@@ -1,0 +1,22 @@
+--- outputs/C_opq.txt	2023-11-01 19:33:18.034494016 -0400
++++ expected/C_opq.txt	2023-10-10 11:54:35.000000000 -0400
+@@ -1,11 +1,8 @@
+-Usage: ../y86 <option(s)> mini-elf-file
+- Options are:
+-  -h      Display usage
+-  -H      Show the Mini-ELF header
+-  -a      Show all with brief memory
+-  -f      Show all with full memory
+-  -s      Show the program headers
+-  -m      Show the memory contents (brief)
+-  -M      Show the memory contents (full)
+-  -d      Disassemble code contents
+-  -D      Disassemble data contents
++Disassembly of executable contents:
++  0x100:                               | .pos 0x100 code
++  0x100:                               | _start:
++  0x100: 60 23                         |   addq %rdx, %rbx
++  0x102: 61 01                         |   subq %rax, %rcx
++  0x104: 62 45                         |   andq %rsp, %rbp
++  0x106: 63 67                         |   xorq %rsi, %rdi
++

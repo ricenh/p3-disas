@@ -1,0 +1,7 @@
+Disassembly of executable contents:
+  0x100:                               | .pos 0x100 code
+  0x100:                               | _start:
+  0x100: 00                            |   halt
+  0x101: 10                            |   nop
+  0x102: 90                            |   ret
+

@@ -1,0 +1,8 @@
+Disassembly of executable contents:
+  0x100:                               | .pos 0x100 code
+  0x100:                               | _start:
+  0x100: 20 01                         |   rrmovq %rax, %rcx
+  0x102: 60 23                         |   addq %rdx, %rbx
+  0x104: a0 6f                         |   pushq %rsi
+  0x106: b0 7f                         |   popq %rdi
+

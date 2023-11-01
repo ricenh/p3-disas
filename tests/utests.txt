@@ -1,0 +1,7 @@
+Running suite(s): Default
+20 ff = 13
+87%: Checks: 33, Failures: 4, Errors: 0
+private.c:36:F:Private:C_fetch_cmov:0: Assertion 'inst.icode == CMOV' failed
+private.c:236:F:Private:C_fetch_pushq:0: Assertion 'inst.icode == PUSHQ' failed
+private.c:260:F:Private:C_fetch_popq:0: Assertion 'inst.icode == POPQ' failed
+private.c:67:F:Private:B_fetch_irmovq:0: Assertion 'inst.icode == IRMOVQ' failed

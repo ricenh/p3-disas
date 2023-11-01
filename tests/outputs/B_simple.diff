@@ -1,0 +1,33 @@
+--- outputs/B_simple.txt	2023-11-01 19:33:21.814526488 -0400
++++ expected/B_simple.txt	2023-10-10 11:54:35.000000000 -0400
+@@ -1,11 +1,19 @@
+-Usage: ../y86 <option(s)> mini-elf-file
+- Options are:
+-  -h      Display usage
+-  -H      Show the Mini-ELF header
+-  -a      Show all with brief memory
+-  -f      Show all with full memory
+-  -s      Show the program headers
+-  -m      Show the memory contents (brief)
+-  -M      Show the memory contents (full)
+-  -d      Disassemble code contents
+-  -D      Disassemble data contents
++01 00 00 01 10 00 01 00  00 00 00 00 45 4c 46 00
++Mini-ELF version 1
++Entry point 0x100
++There are 1 program headers, starting at offset 16 (0x10)
++There is no symbol table present
++There is no string table present
++ Segment   Offset    Size      VirtAddr  Type      Flags
++  00       0x0024    0x0017    0x0100    CODE      R X
++Contents of memory from 0100 to 0117:
++  0100  30 f0 68 24 00 00 00 00  00 00 30 f3 34 12 00 00
++  0110  00 00 00 00 60 03 00
++Disassembly of executable contents:
++  0x100:                               | .pos 0x100 code
++  0x100:                               | _start:
++  0x100: 30 f0 68 24 00 00 00 00 00 00 |   irmovq 0x2468, %rax
++  0x10a: 30 f3 34 12 00 00 00 00 00 00 |   irmovq 0x1234, %rbx
++  0x114: 60 03                         |   addq %rax, %rbx
++  0x116: 00                            |   halt
++

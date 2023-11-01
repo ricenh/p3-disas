@@ -1,0 +1,10 @@
+Disassembly of executable contents:
+  0x100:                               | .pos 0x100 code
+  0x100:                               | _start:
+  0x100: c0                            |   iotrap 0
+  0x101: c1                            |   iotrap 1
+  0x102: c2                            |   iotrap 2
+  0x103: c3                            |   iotrap 3
+  0x104: c4                            |   iotrap 4
+  0x105: c5                            |   iotrap 5
+

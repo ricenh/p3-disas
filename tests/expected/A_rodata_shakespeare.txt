@@ -1,0 +1,20 @@
+Disassembly of data contents:
+  0x200:                               | .pos 0x200 rodata
+  0x200: 54 6f 20 62 65 2c 20 6f 72 20 |   .string "To be, or not to be: that is the question"
+  0x20a: 6e 6f 74 20 74 6f 20 62 65 3a | 
+  0x214: 20 74 68 61 74 20 69 73 20 74 | 
+  0x21e: 68 65 20 71 75 65 73 74 69 6f | 
+  0x228: 6e 00                         | 
+  0x22a: 57 68 61 74 27 73 20 69 6e 20 |   .string "What's in a name? A rose by any other name would smell as sweet."
+  0x234: 61 20 6e 61 6d 65 3f 20 41 20 | 
+  0x23e: 72 6f 73 65 20 62 79 20 61 6e | 
+  0x248: 79 20 6f 74 68 65 72 20 6e 61 | 
+  0x252: 6d 65 20 77 6f 75 6c 64 20 73 | 
+  0x25c: 6d 65 6c 6c 20 61 73 20 73 77 | 
+  0x266: 65 65 74 2e 00                | 
+  0x26b: 42 75 74 2c 20 66 6f 72 20 6d |   .string "But, for my own part, it was Greek to me."
+  0x275: 79 20 6f 77 6e 20 70 61 72 74 | 
+  0x27f: 2c 20 69 74 20 77 61 73 20 47 | 
+  0x289: 72 65 65 6b 20 74 6f 20 6d 65 | 
+  0x293: 2e 00                         | 
+

@@ -1,0 +1,25 @@
+--- outputs/B_jmp.txt	2023-11-01 19:33:19.914510167 -0400
++++ expected/B_jmp.txt	2023-10-10 11:54:35.000000000 -0400
+@@ -1,11 +1,11 @@
+-Usage: ../y86 <option(s)> mini-elf-file
+- Options are:
+-  -h      Display usage
+-  -H      Show the Mini-ELF header
+-  -a      Show all with brief memory
+-  -f      Show all with full memory
+-  -s      Show the program headers
+-  -m      Show the memory contents (brief)
+-  -M      Show the memory contents (full)
+-  -d      Disassemble code contents
+-  -D      Disassemble data contents
++Disassembly of executable contents:
++  0x100:                               | .pos 0x100 code
++  0x100:                               | _start:
++  0x100: 70 88 77 66 55 44 33 22 11    |   jmp 0x1122334455667788
++  0x109: 71 77 66 55 44 33 22 11 88    |   jle 0x8811223344556677
++  0x112: 72 66 55 44 33 22 11 88 77    |   jl 0x7788112233445566
++  0x11b: 73 55 44 33 22 11 88 77 66    |   je 0x6677881122334455
++  0x124: 74 44 33 22 11 88 77 66 55    |   jne 0x5566778811223344
++  0x12d: 75 33 22 11 88 77 66 55 44    |   jge 0x4455667788112233
++  0x136: 76 22 11 88 77 66 55 44 33    |   jg 0x3344556677881122
++
