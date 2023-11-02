@@ -1,4 +1,4 @@
---- outputs/C_twobyte.txt	2023-11-01 19:33:15.990476456 -0400
+--- outputs/C_twobyte.txt	2023-11-02 16:25:03.816148335 -0400
 +++ expected/C_twobyte.txt	2023-10-10 11:54:35.000000000 -0400
 @@ -1,11 +1,8 @@
 -Usage: ../y86 <option(s)> mini-elf-file

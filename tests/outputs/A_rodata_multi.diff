@@ -1,5 +1,5 @@
---- outputs/B_ninebyte.txt	2023-11-02 16:25:06.428171105 -0400
-+++ expected/B_ninebyte.txt	2023-10-10 11:54:35.000000000 -0400
+--- outputs/A_rodata_multi.txt	2023-11-02 16:25:14.132238248 -0400
++++ expected/A_rodata_multi.txt	2023-10-10 11:54:35.000000000 -0400
 @@ -1,11 +1,6 @@
 -Usage: ../y86 <option(s)> mini-elf-file
 - Options are:
@@ -12,9 +12,9 @@
 -  -M      Show the memory contents (full)
 -  -d      Disassemble code contents
 -  -D      Disassemble data contents
-+Disassembly of executable contents:
-+  0x100:                               | .pos 0x100 code
-+  0x100:                               | _start:
-+  0x100: 70 88 77 66 55 44 33 22 11    |   jmp 0x1122334455667788
-+  0x109: 80 11 22 33 44 55 66 77 88    |   call 0x8877665544332211
++Disassembly of data contents:
++  0x200:                               | .pos 0x200 rodata
++  0x200: 66 6f 6f 00                   |   .string "foo"
++  0x204: 77 30 30 74 00                |   .string "w00t"
++  0x209: 75 70 20 64 6f 77 6e 00       |   .string "up down"
 +

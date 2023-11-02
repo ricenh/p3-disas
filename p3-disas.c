@@ -24,7 +24,6 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
     uint64_t *p;
     uint8_t byte1 = memory[cpu->pc];
     uint8_t byte2;
-    ins.ra = byte1;
     switch(byte1) 
     {
         case (0x00): 
@@ -46,56 +45,52 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
         case (0x24):
         case (0x25):
         case (0x26):
-            // ins.icode = CMOV; 
-            // size = 2; 
-            // ins.ifun.cmov = byte1 & 0x0F; 
-            // ins.valP = cpu->pc + size;
-            // byte2 = memory[cpu->pc + 1];  
-            // ins.ra = ((byte2 & 0xF0) >> 4); 
-            // ins.rb = (byte2 & 0x0F);
-            // if(ins.ra > 0x07 || ins.rb > 0x07 || ins.ifun.cmov > 0x07) 
-            // {
-            //     ins.icode = INVALID;
-            //     cpu->stat = INS;
-            //     break;
-            // }   
-            // break;
-            ins.icode = CMOV; 
+            ins.icode = CMOV;
             size = 2;
             ins.ifun.cmov = byte1 & 0x0F;
-            ins.valP = cpu->pc + size;   
-            if(cpu->pc + size >= MEMSIZE)
+            cpu->stat = AOK;
+            ins.valP = cpu->pc + size;
+            // Out of bounds
+            if (cpu->pc + size >= MEMSIZE)
             {
                 ins.icode = INVALID;
                 cpu->stat = ADR;
                 break;
             }
-     
-            byte2 = memory[cpu->pc + 1];    
-            ins.ra = ((byte2 & 0xF0) >> 4); 
-            ins.rb = (byte2 & 0x0F);     
-            if(ins.ra > 0x07 || ins.rb > 0x07 || ins.ifun.cmov > 0x06) 
+       
+            // Set and check registers
+            byte2 = memory[cpu->pc + 1];
+            ins.ra = ((byte2 & 0xF0) >> 4);
+            ins.rb = (byte2 & 0x0F);
+            if (ins.ra >= NUMREGS || ins.rb >= NUMREGS)
             {
-                ins.icode = INVALID; 
+                ins.icode = INVALID;
                 cpu->stat = INS;
             }
             break;
         case (0x30):
             ins.icode = IRMOVQ;
             size = 10;
-            byte2 = memory[cpu->pc + 1];   
-            ins.rb = (byte2 & 0x0F); 
-            if(((byte2 & 0xF0) >> 4) != 0x0F || ins.rb > 0x07)
+            cpu->stat = AOK;
+            ins.valP = cpu->pc + size;
+            if (cpu->pc + size >= MEMSIZE)
             {
-                ins.icode = INVALID; 
+                ins.icode = INVALID;
+                cpu->stat = ADR;
+                break;
+            }
+            byte2 = memory[cpu->pc + 1];
+            ins.rb = (byte2 & 0x0F);
+            if (((byte2 & 0xF0) >> 4) != 0x0F || ins.rb >= NUMREGS)
+            {
+                ins.icode = INVALID;
                 cpu->stat = INS;
                 break;
             }
-            ins.valP = cpu->pc + size;
-            ins.ifun.op = byte1 & 0x0F;
-            p = (uint64_t *) &memory[cpu->pc + 2]; 
+            p = (uint64_t *) &memory[cpu->pc + 2];
             ins.valC.v = *p;
             break;
+
         case (0x40):
             ins.icode = RMMOVQ;
 
@@ -179,30 +174,40 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
         case (0xA0):
             ins.icode = PUSHQ;
             size = 2;
-            byte2 = memory[cpu->pc + 1];  
-            ins.ra = ((byte2 & 0xF0) >> 4); 
-            ins.rb = (byte2 & 0x0F); 
+            cpu->stat = AOK;
             ins.valP = cpu->pc + size;
-            ins.ifun.op = byte1 & 0x0F;
-            if(((byte2 & 0x0F)) != 0x0F || ins.ra > 0x07)
+            if (cpu->pc + size >= MEMSIZE)
             {
                 ins.icode = INVALID;
-                cpu->stat = INS; 
-            } 
+                cpu->stat = ADR;
+                break;
+            }
+            byte2 = memory[cpu->pc + 1];
+            ins.ra = ((byte2 & 0xF0) >> 4);
+            if (((byte2 & 0x0F)) != 0x0F || ins.ra >= NUMREGS)
+            {
+                ins.icode = INVALID;
+                cpu->stat = INS;
+            }
             break;
         case (0xB0):
             ins.icode = POPQ;
             size = 2;
-            byte2 = memory[cpu->pc + 1];  
-            ins.ra = ((byte2 & 0xF0) >> 4); 
-            ins.rb = (byte2 & 0x0F); 
+            cpu->stat = AOK;
             ins.valP = cpu->pc + size;
-            ins.ifun.op = byte1 & 0x0F;
-            if(((byte2 & 0x0F)) != 0x0F || ins.ra > 0x07)
+            if (cpu->pc + size >= MEMSIZE)
+            {
+                ins.icode = INVALID;
+                cpu->stat = ADR;
+                break;
+            }
+            byte2 = memory[cpu->pc + 1];
+            ins.ra = ((byte2 & 0xF0) >> 4);
+            if (((byte2 & 0x0F)) != 0x0F || ins.ra >= NUMREGS)
             {
                 ins.icode = INVALID;
                 cpu->stat = INS;
-            } 
+            }
             break;
         case (0xC0):
         case (0xC1):
@@ -213,8 +218,6 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
             ins.icode = IOTRAP;
             size = 1;
             byte2 = memory[cpu->pc + 1];  
-            ins.ra = ((byte2 & 0xF0) >> 4); 
-            ins.rb = (byte2 & 0x0F); 
             ins.valP = cpu->pc + size;
             ins.ifun.op = byte1 & 0x0F;
             break;
@@ -317,7 +320,24 @@ bool parse_command_line_p3 (int argc, char **argv,
 }
 
 
-void disassemble (y86_inst_t *inst)
+void printReg(uint32_t b) 
+{
+    // //register printing helper method
+    // switch(b)
+    // {
+    //     case 0x00: printf("%%rax"); break;
+    //     case 0x01: printf("%%rcx"); break;
+    //     case 0x02: printf("%%rdx"); break;
+    //     case 0x03: printf("%%rbx"); break;
+    //     case 0x04: printf("%%rsp"); break;
+    //     case 0x05: printf("%%rbp"); break;
+    //     case 0x06: printf("%%rsi"); break;
+    //     case 0x07: printf("%%rdi"); break;
+    // }
+
+}
+
+void disassemble (y86_inst_t *inst) 
 {
 }
 
