@@ -1,21 +1,6 @@
-D_onebyte                      FAIL (see tests/outputs/D_onebyte.diff for details)
+D_onebyte                      pass
 C_help                         pass
-C_twobyte                      FAIL (see tests/outputs/C_twobyte.diff for details)
-C_cmov                         FAIL (see tests/outputs/C_cmov.diff for details)
-C_opq                          FAIL (see tests/outputs/C_opq.diff for details)
+C_twobyte                      pass
+C_cmov                         pass
+C_opq                          pass
 B_ninebyte                     FAIL (see tests/outputs/B_ninebyte.diff for details)
-B_jmp                          FAIL (see tests/outputs/B_jmp.diff for details)
-B_tenbyte                      FAIL (see tests/outputs/B_tenbyte.diff for details)
-B_simple                       FAIL (see tests/outputs/B_simple.diff for details)
-B_simple_multi                 FAIL (see tests/outputs/B_simple_multi.diff for details)
-B_iotrap                       FAIL (see tests/outputs/B_iotrap.diff for details)
-A_data_code                    FAIL (see tests/outputs/A_data_code.diff for details)
-A_rodata_code                  FAIL (see tests/outputs/A_rodata_code.diff for details)
-A_data                         FAIL (see tests/outputs/A_data.diff for details)
-A_rodata                       FAIL (see tests/outputs/A_rodata.diff for details)
-A_rodata_multi                 FAIL (see tests/outputs/A_rodata_multi.diff for details)
-A_interleaved                  FAIL (see tests/outputs/A_interleaved.diff for details)
-A_invalid                      FAIL (see tests/outputs/A_invalid.diff for details)
-A_bad_no_elf                   FAIL (see tests/outputs/A_bad_no_elf.diff for details)
-A_bad_phdr                     FAIL (see tests/outputs/A_bad_phdr.diff for details)
-A_bad_short_header             FAIL (see tests/outputs/A_bad_short_header.diff for details)

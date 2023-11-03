@@ -95,14 +95,13 @@ int main (int argc, char **argv)
             }   
         }
 
-        int l;
         if(disas_code){
         printf("Disassembly of executable contents:\n");
-        for(l = 0; l < hdr.e_num_phdr; l++)
+        for(int i = 0; i < hdr.e_num_phdr; i++)
         {
-            if(phdr[l].p_type == CODE)
+            if(phdr[i].p_type == CODE)
             {
-                disassemble_code(memory, &phdr[l], &hdr);
+                disassemble_code(memory, &phdr[i], &hdr);
             }
         }  
         
@@ -113,7 +112,6 @@ int main (int argc, char **argv)
  
     }
 
- 
     return EXIT_SUCCESS;
 
 }
