@@ -320,106 +320,191 @@ bool parse_command_line_p3 (int argc, char **argv,
 }
 
 
-void printRegister(uint32_t b) 
+void printRegister(uint32_t s) 
 {
-    switch(b)
+    switch(s)
     {
-        case 0x00: printf("%%rax"); break;
-        case 0x01: printf("%%rcx"); break;
-        case 0x02: printf("%%rdx"); break;
-        case 0x03: printf("%%rbx"); break;
-        case 0x04: printf("%%rsp"); break;
-        case 0x05: printf("%%rbp"); break;
-        case 0x06: printf("%%rsi"); break;
-        case 0x07: printf("%%rdi"); break;
-        case 0x08: printf("%%r8"); break;
-        case 0x09: printf("%%r9"); break;
-        case 0x0A: printf("%%r10"); break;
-        case 0x0B: printf("%%r11"); break;
-        case 0x0C: printf("%%r12"); break;
-        case 0x0D: printf("%%r13"); break;
-        case 0x0E: printf("%%r14"); break;
-        case 0x0F: printf("%%r15"); break;
-
+        case 0x00: 
+            printf("%%rax"); 
+            break;
+        case 0x01: 
+            printf("%%rcx"); 
+            break;
+        case 0x02: 
+            printf("%%rdx"); 
+            break;
+        case 0x03: 
+            printf("%%rbx"); 
+            break;
+        case 0x04: 
+            printf("%%rsp"); 
+            break;
+        case 0x05: 
+            printf("%%rbp"); 
+            break;
+        case 0x06: 
+            printf("%%rsi"); 
+            break;
+        case 0x07: 
+            printf("%%rdi"); 
+            break;
+        case 0x08: 
+            printf("%%r8"); 
+            break;
+        case 0x09: 
+            printf("%%r9"); 
+            break;
+        case 0x0A: 
+            printf("%%r10");
+            break;
+        case 0x0B: 
+            printf("%%r11"); 
+            break;
+        case 0x0C: 
+            printf("%%r12"); 
+            break;
+        case 0x0D: 
+            printf("%%r13"); 
+            break;
+        case 0x0E: 
+            printf("%%r14"); 
+            break;
     }
 
 }
 
 void disassemble (y86_inst_t *inst) 
 {
-    //switches on inst type
     switch(inst->icode)
     {
-        // correlating info for each case
-        case HALT: printf("halt"); break;
-        case NOP: printf("nop"); break;
+        case HALT: 
+            printf("halt"); 
+            break;
+        case NOP: 
+            printf("nop"); 
+            break;
         case CMOV: 
-            //nested switch for cmov cases
             switch(inst->ifun.cmov)
             {
-                case RRMOVQ: printf("rrmovq "); break; 
-                case CMOVLE: printf("cmovle "); break;
-                case CMOVL: printf("cmovl "); break;
-                case CMOVE: printf("cmove "); break;
-                case CMOVNE: printf("cmovne "); break;
-                case CMOVGE: printf("cmovge " ); break;
-                case CMOVG: printf("cmovg "); break;
-                case BADCMOV: return; 
+                case RRMOVQ: 
+                    printf("rrmovq "); 
+                    break; 
+                case CMOVLE: 
+                    printf("cmovle "); 
+                    break;
+                case CMOVL: 
+                    printf("cmovl "); 
+                    break;
+                case CMOVE: 
+                    printf("cmove ");
+                    break;
+                case CMOVNE: 
+                    printf("cmovne "); 
+                    break;
+                case CMOVGE: 
+                    printf("cmovge " ); 
+                    break;
+                case CMOVG: 
+                    printf("cmovg "); 
+                    break;
+                case BADCMOV: 
+                    return; 
             } 
             printRegister(inst->ra);
             printf(", ");
             printRegister(inst->rb);
             break;   
-        case IRMOVQ: printf("irmovq"); 
-            printf("%#lx, ", (uint64_t) inst->valP); 
+        case IRMOVQ: 
+            printf("irmovq "); 
+            printf("%#lx, ", (uint64_t) inst->valC.v); 
             printRegister(inst->rb);
             break;    
-        case RMMOVQ: printf("rmmovq"); 
+        case RMMOVQ: 
+            printf("rmmovq "); 
             printRegister(inst->ra);
-            printf(", %#lx(", (uint64_t) inst->valC.d); 
-            printRegister(inst->rb);
-            printf(")");
+            printf(", %#lx", (uint64_t) inst->valC.d); 
+            if(inst->rb < 15)
+            {
+                printf("(");
+                printRegister(inst->rb);
+                printf(")");
+            }
+            else 
+            {
+                printRegister(inst->rb);
+            }
             break;
-        case MRMOVQ: printf("mrmovq"); 
-            printf("%#lx(", (uint64_t) inst->valC.d); 
-            printRegister(inst->rb);
-            printf("), ");
+        case MRMOVQ: 
+            printf("mrmovq "); 
+            printf("%#lx", (uint64_t) inst->valC.d); 
+            if(inst->rb < 15)
+            {
+                printf("(");
+                printRegister(inst->rb);
+                printf("), ");
+            }
+            else 
+            {
+                printf(", ");
+                printRegister(inst->rb);
+            }    
             printRegister(inst->ra);
-            break;  
+            break;
         case OPQ:
-            //nested switch for op cases 
             switch(inst->ifun.op)
             {
-                case ADD: printf("addq "); break;
-                case SUB: printf("subq "); break;
-                case AND: printf("andq "); break;
-                case XOR: printf("xorq "); break;
-                case BADOP:return;
-               
+                case ADD: 
+                    printf("addq "); 
+                    break;
+                case SUB: 
+                    printf("subq "); 
+                    break;
+                case AND: 
+                    printf("andq "); 
+                    break;
+                case XOR: 
+                    printf("xorq "); 
+                    break;
+                case BADOP:
+                    return;
             }
             printRegister(inst->ra);
             printf(", ");
             printRegister(inst->rb);
             break;   
         case JUMP: 
-            //nested switch for jump cases
             switch(inst->ifun.jump)
             {
-                case JMP: printf("jmp"); break;
-                case JLE: printf("jle"); break;
-                case JL: printf("jl"); break;
-                case JE: printf("je"); break;
-                case JNE: printf("jne"); break;
-                case JGE: printf("jge"); break;
-                case JG: printf("jg"); break;
-                case BADJUMP: return;
+                case JMP: 
+                    printf("jmp "); 
+                    break;
+                case JLE: 
+                    printf("jle "); 
+                    break;
+                case JL: 
+                    printf("jl "); 
+                    break;
+                case JE: 
+                    printf("je "); 
+                    break;
+                case JNE: 
+                    printf("jne "); 
+                    break;
+                case JGE: 
+                    printf("jge "); 
+                    break;
+                case JG: 
+                    printf("jg "); 
+                    break;
+                case BADJUMP: 
+                    return;
 
             }
-            printf("%#lx", (uint64_t) inst->valP); 
+            printf("%#lx", (uint64_t) inst->valC.dest);
             break;    
         case CALL: 
-            printf("call"); 
-            printf("%#lx", (uint64_t) inst->valP); 
+            printf("call "); 
+            printf("%#lx", (uint64_t) inst->valC.dest); 
             break;
         case RET: 
             printf("ret"); 
@@ -433,8 +518,8 @@ void disassemble (y86_inst_t *inst)
             printRegister(inst->ra); 
             break;
         case IOTRAP:
-            printf("iotrap");
-            printRegister(inst->ra);
+            printf("iotrap ");
+            printf("%i", inst->ifun.trap);
             break;
         case INVALID: 
             break;
@@ -444,26 +529,14 @@ void disassemble (y86_inst_t *inst)
 
 void disassemble_code (byte_t *memory, elf_phdr_t *phdr, elf_hdr_t *hdr)
 {
-    //tests for null parameters
-    if(memory == NULL || phdr == NULL || hdr == NULL) 
-    {
-        return;
-    }
-    
-    //assigns cpu program counter
     y86_t cpu;
     y86_inst_t ins;
     uint32_t addr = phdr->p_vaddr;
     cpu.pc = addr;
-   
-   
     printf("  0x%03lx:         %31s%03lx code", (uint64_t) cpu.pc, "| .pos 0x", (uint64_t) cpu.pc);
     printf("\n");
-      
     while(cpu.pc < addr + phdr->p_size) 
     {
-        //checks if elh entry is the current instruction
-        //prints start if so
         if(cpu.pc == hdr->e_entry)
         {
             printf("  0x%03lx:         %31s", (uint64_t) cpu.pc, "| _start:");
@@ -497,16 +570,12 @@ void disassemble_code (byte_t *memory, elf_phdr_t *phdr, elf_hdr_t *hdr)
                 size = 10;
                 break;
         }
-        //tests if ins type came back as invalid
         if(ins.icode == INVALID)
         {
-            //prints invalid op code
-            printf("Invalid opcode:"); //%#02x\n\n", ins.opcode
+            printf("Invalid opcode: 0x%2lx\n", (uint64_t) cpu.pc); //%#02x\n\n", 
             cpu.pc += size;
             return;
         }
-        
-        //prints hex for current instruction
         printf("  0x%03lx: ", (uint64_t) cpu.pc);
         for(int i = cpu.pc; i < cpu.pc + size; i++)
         {
@@ -528,6 +597,28 @@ void disassemble_code (byte_t *memory, elf_phdr_t *phdr, elf_hdr_t *hdr)
 
 void disassemble_data (byte_t *memory, elf_phdr_t *phdr)
 {
+    y86_t cpu;
+    uint32_t addr = phdr->p_vaddr;
+    cpu.pc = addr;
+    printf("  0x%03lx:", (uint64_t) cpu.pc);
+    printf("%40s%03lx data\n","| .pos 0x", (uint64_t) cpu.pc);
+    while(cpu.pc < addr + phdr->p_size)
+    {
+        printf("  0x%03lx: ", (uint64_t) cpu.pc);
+        for(int i = cpu.pc; i < cpu.pc + 8; i++)
+        {
+            printf("%02x ", memory[i]);
+        }
+        printf("%7s","|"); 
+        printf("   .quad ");
+        
+        uint64_t *p;
+        p = (uint64_t *) &memory[cpu.pc];
+        printf("%p", (void *) *p);
+        cpu.pc += 8;
+        printf("\n"); 
+    }
+    printf("\n");
 }
 
 void disassemble_rodata (byte_t *memory, elf_phdr_t *phdr)

@@ -1,0 +1,16 @@
+Disassembly of executable contents:
+  0x100:                               | .pos 0x100 code
+  0x100:                               | _start:
+  0x100: 00                            |   halt
+
+  0x400:                               | .pos 0x400 code
+  0x400: 10                            |   nop
+  0x401: 00                            |   halt
+
+Disassembly of data contents:
+  0x200:                               | .pos 0x200 data
+  0x200: 10 00 00 00 00 00 00 00       |   .quad 0x10
+
+  0x500:                               | .pos 0x500 data
+  0x500: 78 56 34 12 00 00 00 00       |   .quad 0x12345678
+

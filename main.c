@@ -95,17 +95,33 @@ int main (int argc, char **argv)
             }   
         }
 
-        if(disas_code){
-        printf("Disassembly of executable contents:\n");
-        for(int i = 0; i < hdr.e_num_phdr; i++)
+        if(disas_code)
         {
-            if(phdr[i].p_type == CODE)
+            printf("Disassembly of executable contents:\n");
+            for(int i = 0; i < hdr.e_num_phdr; i++)
             {
-                disassemble_code(memory, &phdr[i], &hdr);
-            }
-        }  
-        
-    }
+                if(phdr[i].p_type == CODE)
+                {   
+                    disassemble_code(memory, &phdr[i], &hdr);
+                }
+            }   
+        }
+
+        if(disas_data) 
+        {
+            printf("Disassembly of data contents:\n");
+            for(int i = 0; i < hdr.e_num_phdr; i++)
+            {
+                if(phdr[i].p_type == DATA && phdr[i].p_flags == 4)
+                {
+                    disassemble_rodata(memory, &phdr[i]);
+                }
+                else if(phdr[i].p_type == DATA && phdr[i].p_flags == 6)
+                {
+                    disassemble_data(memory, &phdr[i]);   
+                }
+            }  
+        }
 
         fclose(f);
         free(memory);
