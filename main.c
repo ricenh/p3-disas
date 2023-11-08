@@ -94,10 +94,12 @@ int main (int argc, char **argv)
                 dump_memory(memory, phdr[i].p_vaddr, phdr[i].p_vaddr + phdr[i].p_size); 
             }   
         }
-
+        
+        //print the disassembled code
         if(disas_code)
         {
             printf("Disassembly of executable contents:\n");
+            //print the code from each phdr
             for(int i = 0; i < hdr.e_num_phdr; i++)
             {
                 if(phdr[i].p_type == CODE)
@@ -107,9 +109,11 @@ int main (int argc, char **argv)
             }   
         }
 
+        //print the disassembled data
         if(disas_data) 
         {
             printf("Disassembly of data contents:\n");
+            //print the data from each phdr
             for(int i = 0; i < hdr.e_num_phdr; i++)
             {
                 if(phdr[i].p_type == DATA && phdr[i].p_flags == 4)

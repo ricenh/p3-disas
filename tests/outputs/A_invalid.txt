@@ -2,4 +2,5 @@ Disassembly of executable contents:
   0x100:                               | .pos 0x100 code
   0x100:                               | _start:
   0x100: 30 f3 0f 00 00 00 20 31 40 13 |   irmovq 0x134031200000000f, %rbx
-Invalid opcode: 0x10a
+Invalid opcode: 0xfd
+

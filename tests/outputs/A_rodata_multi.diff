@@ -1,9 +1,0 @@
---- outputs/A_rodata_multi.txt	2023-11-06 15:39:33.862119521 -0500
-+++ expected/A_rodata_multi.txt	2023-10-10 11:54:35.000000000 -0400
-@@ -1 +1,6 @@
- Disassembly of data contents:
-+  0x200:                               | .pos 0x200 rodata
-+  0x200: 66 6f 6f 00                   |   .string "foo"
-+  0x204: 77 30 30 74 00                |   .string "w00t"
-+  0x209: 75 70 20 64 6f 77 6e 00       |   .string "up down"
-+

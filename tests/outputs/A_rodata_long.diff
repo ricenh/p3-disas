@@ -1,0 +1,13 @@
+--- outputs/A_rodata_long.txt	2023-11-08 00:08:59.794409176 -0500
++++ expected/A_rodata_long.txt	2023-10-10 11:54:35.000000000 -0400
+@@ -1,6 +1,10 @@
+ Disassembly of data contents:
+   0x200:                               | .pos 0x200 rodata
+   0x200: 30 31 32 33 34 35 36 37 38 39 |   .string "0123456789"
++  0x20a: 00                            | 
+   0x20b: 68 65 6c 6c 6f 20 77 6f 72 6c |   .string "hello world"
++  0x215: 64 00                         | 
+   0x217: 61 62 63 64 65 66 67 68 69 6a |   .string "abcdefghijklmnopqrstuvwxyz"
++  0x221: 6b 6c 6d 6e 6f 70 71 72 73 74 | 
++  0x22b: 75 76 77 78 79 7a 00          | 
+ 

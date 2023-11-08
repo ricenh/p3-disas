@@ -12,20 +12,24 @@
 
 y86_inst_t fetch (y86_t *cpu, byte_t *memory)
 {
+    //initialize the variables being used
     y86_inst_t ins;
     size_t size = sizeof(y86_inst_t);
     memset(&ins, 0x00, sizeof(ins));
+    //check the params
     if(memory == NULL || cpu->pc >= MEMSIZE || cpu->pc < 0)
     {
         ins.icode = INVALID;
         cpu->stat = ADR;
         return ins;
-    } 
+    }
+    //get each byte of the data 
     uint64_t *p;
     uint8_t byte1 = memory[cpu->pc];
     uint8_t byte2;
     switch(byte1) 
     {
+        //get each case and set the values
         case (0x00): 
             ins.icode = HALT; 
             cpu->stat = INS;
@@ -50,18 +54,17 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
             ins.ifun.cmov = byte1 & 0x0F;
             cpu->stat = AOK;
             ins.valP = cpu->pc + size;
-            // Out of bounds
+            //out of bound
             if (cpu->pc + size >= MEMSIZE)
             {
                 ins.icode = INVALID;
                 cpu->stat = ADR;
                 break;
             }
-       
-            // Set and check registers
             byte2 = memory[cpu->pc + 1];
             ins.ra = ((byte2 & 0xF0) >> 4);
             ins.rb = (byte2 & 0x0F);
+            //check the register
             if (ins.ra >= NUMREGS || ins.rb >= NUMREGS)
             {
                 ins.icode = INVALID;
@@ -73,6 +76,7 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
             size = 10;
             cpu->stat = AOK;
             ins.valP = cpu->pc + size;
+            //check if size is valid
             if (cpu->pc + size >= MEMSIZE)
             {
                 ins.icode = INVALID;
@@ -81,6 +85,7 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
             }
             byte2 = memory[cpu->pc + 1];
             ins.rb = (byte2 & 0x0F);
+            //check if the first byte is f and the rest of the register
             if (((byte2 & 0xF0) >> 4) != 0x0F || ins.rb >= NUMREGS)
             {
                 ins.icode = INVALID;
@@ -93,8 +98,8 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
 
         case (0x40):
             ins.icode = RMMOVQ;
-
             size = 10;
+            //check size
             if(cpu->pc + size >= MEMSIZE)
             {
                 ins.icode = INVALID;
@@ -152,7 +157,8 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
         case (0x80):
             ins.icode = CALL;
             size = 9;
-             if(cpu->pc + size >= MEMSIZE)
+            //check the size 
+            if(cpu->pc + size >= MEMSIZE)
             {
                 ins.icode = INVALID;
                 cpu->stat = ADR;
@@ -176,6 +182,7 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
             size = 2;
             cpu->stat = AOK;
             ins.valP = cpu->pc + size;
+            //check the size
             if (cpu->pc + size >= MEMSIZE)
             {
                 ins.icode = INVALID;
@@ -184,6 +191,7 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
             }
             byte2 = memory[cpu->pc + 1];
             ins.ra = ((byte2 & 0xF0) >> 4);
+            //check to see if the first byte is f and the rest of the register
             if (((byte2 & 0x0F)) != 0x0F || ins.ra >= NUMREGS)
             {
                 ins.icode = INVALID;
@@ -195,6 +203,7 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
             size = 2;
             cpu->stat = AOK;
             ins.valP = cpu->pc + size;
+            //check size
             if (cpu->pc + size >= MEMSIZE)
             {
                 ins.icode = INVALID;
@@ -203,6 +212,7 @@ y86_inst_t fetch (y86_t *cpu, byte_t *memory)
             }
             byte2 = memory[cpu->pc + 1];
             ins.ra = ((byte2 & 0xF0) >> 4);
+            //check to see if the first byte is f and the rest of the register
             if (((byte2 & 0x0F)) != 0x0F || ins.ra >= NUMREGS)
             {
                 ins.icode = INVALID;
@@ -308,7 +318,7 @@ bool parse_command_line_p3 (int argc, char **argv,
         usage_p3(argv);
         return false;
     }
- 
+
     if (optind != argc-1) 
     {
         // no filename (or extraneous input)
@@ -319,7 +329,7 @@ bool parse_command_line_p3 (int argc, char **argv,
     return true;
 }
 
-
+//prints the register based of the hex value
 void printRegister(uint32_t s) 
 {
     switch(s)
@@ -370,11 +380,11 @@ void printRegister(uint32_t s)
             printf("%%r14"); 
             break;
     }
-
 }
 
 void disassemble (y86_inst_t *inst) 
 {
+    //print each icode
     switch(inst->icode)
     {
         case HALT: 
@@ -413,12 +423,14 @@ void disassemble (y86_inst_t *inst)
             printRegister(inst->ra);
             printf(", ");
             printRegister(inst->rb);
-            break;   
+            break; 
+        //print the icode and the registers  
         case IRMOVQ: 
             printf("irmovq "); 
             printf("%#lx, ", (uint64_t) inst->valC.v); 
             printRegister(inst->rb);
-            break;    
+            break;   
+        //print the icode, and correct register and memory 
         case RMMOVQ: 
             printf("rmmovq "); 
             printRegister(inst->ra);
@@ -523,12 +535,12 @@ void disassemble (y86_inst_t *inst)
             break;
         case INVALID: 
             break;
-       
      }
 }
 
 void disassemble_code (byte_t *memory, elf_phdr_t *phdr, elf_hdr_t *hdr)
 {
+
     y86_t cpu;
     y86_inst_t ins;
     uint32_t addr = phdr->p_vaddr;
@@ -546,7 +558,7 @@ void disassemble_code (byte_t *memory, elf_phdr_t *phdr, elf_hdr_t *hdr)
         ins = fetch(&cpu, memory);
         switch(ins.icode) {
             case (INVALID):
-                size = 0;
+                size = 1;
                 break;
             case (HALT):
             case (NOP):
@@ -572,7 +584,7 @@ void disassemble_code (byte_t *memory, elf_phdr_t *phdr, elf_hdr_t *hdr)
         }
         if(ins.icode == INVALID)
         {
-            printf("Invalid opcode: 0x%2lx\n", (uint64_t) cpu.pc); //%#02x\n\n", 
+            printf("Invalid opcode: %#02x\n\n", (ins.icode | 0xF0));
             cpu.pc += size;
             return;
         }
@@ -597,11 +609,14 @@ void disassemble_code (byte_t *memory, elf_phdr_t *phdr, elf_hdr_t *hdr)
 
 void disassemble_data (byte_t *memory, elf_phdr_t *phdr)
 {
+    //set the variables
     y86_t cpu;
     uint32_t addr = phdr->p_vaddr;
     cpu.pc = addr;
+    //print the pos
     printf("  0x%03lx:", (uint64_t) cpu.pc);
     printf("%40s%03lx data\n","| .pos 0x", (uint64_t) cpu.pc);
+    //print the rest of instructions
     while(cpu.pc < addr + phdr->p_size)
     {
         printf("  0x%03lx: ", (uint64_t) cpu.pc);
@@ -611,8 +626,8 @@ void disassemble_data (byte_t *memory, elf_phdr_t *phdr)
         }
         printf("%7s","|"); 
         printf("   .quad ");
-        
         uint64_t *p;
+        //print the memory of the pc
         p = (uint64_t *) &memory[cpu.pc];
         printf("%p", (void *) *p);
         cpu.pc += 8;
@@ -623,5 +638,41 @@ void disassemble_data (byte_t *memory, elf_phdr_t *phdr)
 
 void disassemble_rodata (byte_t *memory, elf_phdr_t *phdr)
 {
+    //set the variables
+    y86_t cpu;
+    uint32_t addr = phdr->p_vaddr;
+    cpu.pc = addr;
+    int i;
+    //print pos
+    printf("  0x%03lx:           ", (uint64_t) cpu.pc);
+    printf("%29s%03lx rodata\n","| .pos 0x", (uint64_t) cpu.pc);
+    while(cpu.pc <  addr + phdr->p_size)
+    {
+        printf("  0x%03lx: ", (uint64_t) cpu.pc);
+        for(i = cpu.pc; i < cpu.pc + 10; i++)
+        {
+            printf("%02x ", memory[i]);
+            if(memory[i] == 0x00)
+            {
+                int space = 10 - (i - (cpu.pc - 1));
+                for (int i = 0; i < space; i++) {
+                    printf("   ");
+                }
+                break;
+            } 
+        }
+        i = cpu.pc;
+        //print the memory
+        printf("|   .string \"");
+        while(memory[i] != 0x00)
+        {
+            printf("%c", memory[i++]);
+        }
+        int bytes = (i - cpu.pc) + 1;
+        printf("\"");
+        cpu.pc += bytes; 
+        printf("\n");
+    }
+    printf("\n");
 }
 

@@ -1,9 +1,0 @@
---- outputs/A_invalid.txt	2023-11-06 15:39:35.774135852 -0500
-+++ expected/A_invalid.txt	2023-10-10 11:54:35.000000000 -0400
-@@ -2,4 +2,5 @@
-   0x100:                               | .pos 0x100 code
-   0x100:                               | _start:
-   0x100: 30 f3 0f 00 00 00 20 31 40 13 |   irmovq 0x134031200000000f, %rbx
--Invalid opcode: 0x10a
-+Invalid opcode: 0xfd
-+

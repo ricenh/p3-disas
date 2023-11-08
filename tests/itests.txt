@@ -12,13 +12,20 @@ B_iotrap                       pass
 A_data_code                    pass
 A_rodata_code                  pass
 A_data                         pass
-A_rodata                       FAIL (see tests/outputs/A_rodata.diff for details)
-A_rodata_multi                 FAIL (see tests/outputs/A_rodata_multi.diff for details)
-A_interleaved                  FAIL (see tests/outputs/A_interleaved.diff for details)
-A_invalid                      FAIL (see tests/outputs/A_invalid.diff for details)
+A_rodata                       pass
+A_rodata_multi                 pass
+A_interleaved                  pass
+A_invalid                      pass
 A_bad_no_elf                   pass
 A_bad_phdr                     pass
 A_bad_short_header             pass
 A_bad_short_phdr               pass
 A_bad_filename                 pass
 A_missing_file                 pass
+A_extra_params                 pass
+A_unaligned1                   pass
+A_unaligned2                   pass
+A_rodata_long                  FAIL (see tests/outputs/A_rodata_long.diff for details)
+A_rodata_shakespeare           FAIL (see tests/outputs/A_rodata_shakespeare.diff for details)
+No memory leak found.
+No uninitialized value found.
